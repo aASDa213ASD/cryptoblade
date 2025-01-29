@@ -6,11 +6,12 @@ from os import listdir
 from os.path import isfile, join
 from tqdm import tqdm
 from time import sleep
+from pathlib import Path
 
 
 class Cryptoblade:
     def __init__(self):
-        pass
+        self.directory = Path(__file__).resolve().parent
 
     def encrypt(self, key: str, file_name: str = "all"):
         self.fernet = Fernet(urlsafe_b64encode(sha256(key.encode("utf-8")).digest()))
@@ -19,12 +20,13 @@ class Cryptoblade:
 
         if file_name == "all":
             files = [
-                f for f in listdir("../data/raw/") if isfile(join("../data/raw/", f))
+                f for f in listdir(f"{self.directory}/../../data/raw/")
+                if isfile(join(f"{self.directory}/../../data/raw/", f)) and not f.startswith('.')
             ]
             for file in files:
                 name, extension = file.rsplit(".", 1)
 
-                with open(f"../data/raw/{file}", "r") as f:
+                with open(f"{self.directory}/../../data/raw/{file}", "r") as f:
                     data = f.read()
 
                 for _ in tqdm(
@@ -39,7 +41,7 @@ class Cryptoblade:
                 data = self.fernet.encrypt(data.encode("utf-8"))
                 encrypted_data[file] = data
         else:
-            with open(f"../data/raw/{file_name}", "r") as f:
+            with open(f"{self.directory}/../../data/raw/{file_name}", "r") as f:
                 data = f.read()
 
             for _ in tqdm(
@@ -59,7 +61,7 @@ class Cryptoblade:
     def decrypt(self, key: str, file_name: str = None):
         fernet = Fernet(urlsafe_b64encode(sha256(key.encode()).digest()))
 
-        with open(f"../data/encrypted/{file_name}", "rb") as file:
+        with open(f"{self.directory}/../../data/encrypted/{file_name}", "rb") as file:
             encrypted_data = file.read()
 
         for _ in tqdm(

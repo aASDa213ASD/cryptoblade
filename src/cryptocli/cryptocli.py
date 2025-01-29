@@ -6,8 +6,9 @@ from inspect import signature
 from time import sleep
 from hashlib import md5
 from tqdm import tqdm
+from pathlib import Path
 
-from cryptoblade.cryptoblade import Cryptoblade
+from ..cryptoblade.cryptoblade import Cryptoblade
 from .randomart import generate_random_art
 
 
@@ -17,16 +18,17 @@ class CryptoCLI:
         self.console = Console()
         self.actions = ["encrypt", "decrypt", "hide", "unhide", "help", "exit"]
         self.action_completer = WordCompleter(self.actions, ignore_case=True)
+        self.directory = Path(__file__).resolve().parent
 
     def clear(self):
         self.console.clear()
 
     def help(self):
-        with open("cryptocli/resources/help.txt", "r") as file:
+        with open(f"{self.directory}/resources/help.txt", "r") as file:
             self.console.print(file.read())
 
     def version(self, verbose: str = None) -> None:
-        with open("cryptocli/resources/version.txt", "r") as file:
+        with open(f"{self.directory}/resources/version.txt", "r") as file:
             version_full = file.read()
             version_stripped = version_full.split("\n")[0]
 
@@ -41,7 +43,7 @@ class CryptoCLI:
         self.console.print(version_stripped)
 
     def draw_intro(self):
-        with open("cryptocli/resources/intro_message.txt", "r") as file:
+        with open(f"{self.directory}/resources/intro_message.txt", "r") as file:
             self.console.print(file.read())
 
     def encrypt(self, file_name: str = None):
@@ -49,7 +51,7 @@ class CryptoCLI:
             self.console.print("cryptoblade: No file provided for encryption")
             return
 
-        if file_name != "all" and not path.exists(f"../data/raw/{file_name}"):
+        if file_name != "all" and not path.exists(f"{self.directory}/../../data/raw/{file_name}"):
             self.console.print(
                 f"cryptoblade: File [green]'{file_name}'[/green] does not exist"
             )
@@ -82,7 +84,7 @@ class CryptoCLI:
 
         for file, data in encrypted_data.items():
             name, extension = file.rsplit(".", 1)
-            with open(f"../data/encrypted/{name}.blade", "wb") as f:
+            with open(f"{self.directory}/../../data/encrypted/{name}.blade", "wb") as f:
                 f.write(data)
 
     def decrypt(self, file_name: str = None):
@@ -90,7 +92,7 @@ class CryptoCLI:
             self.console.print("cryptoblade: No filename provided for decryption")
             return
 
-        if not path.exists(f"../data/encrypted/{file_name}"):
+        if not path.exists(f"{self.directory}/../../data/encrypted/{file_name}"):
             self.console.print(
                 f"cryptoblade: File [green]'{file_name}'[/green] does not exist"
             )
@@ -109,13 +111,13 @@ class CryptoCLI:
         if not data:
             return
 
-        choice = prompt(f"OK. Save decrypted file? (Y/N): ").strip().lower()
+        choice = prompt(f"OK. Save decrypted file? (y/n): ").strip().lower()
 
         if len(choice) > 0 and choice[0] == "y":
             file_name_save = prompt(
                 f"Save decrypted file as: ", default=file_name, placeholder="y"
             ).strip()
-            file_path = f"../data/decrypted/"
+            file_path = f"{self.directory}/../../data/decrypted/"
 
             if file_name_save:
                 if not path.exists(file_path):
@@ -186,8 +188,8 @@ class CryptoCLI:
 
     def __get_commands_completer(self) -> WordCompleter:
         known_arguments: dict = {
-            "encrypt": self.__get_direcotory_files_set("../data/raw/", True),
-            "decrypt": self.__get_direcotory_files_set("../data/encrypted/"),
+            "encrypt": self.__get_direcotory_files_set(f"{self.directory}/../../data/raw/", True),
+            "decrypt": self.__get_direcotory_files_set(f"{self.directory}/../../data/encrypted/"),
             #'hide': {'image', 'data'},
             #'unhide': {'image'},
             "help": None,  # No arguments
@@ -211,7 +213,8 @@ class CryptoCLI:
             makedirs(directory)
 
         file_list = [
-            f for f in listdir(directory) if path.isfile(path.join(directory, f))
+            f for f in listdir(directory)
+            if path.isfile(path.join(directory, f)) and not f.startswith('.')
         ]
 
         if file_list:

@@ -1,4 +1,4 @@
-from cryptocli.cryptocli import CryptoCLI
+from src.cryptocli.cryptocli import CryptoCLI
 
 
 if __name__ == "__main__":
