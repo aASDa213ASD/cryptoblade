@@ -72,7 +72,7 @@ jobs:
         run: pip install build setuptools wheel
 
       - name: Build Package
-        run: python -m build --sdist --wheel
+        run: python -m build .build_config/ --outdir dist/
 
       - name: Upload Built Package as Artifact
         uses: actions/upload-artifact@v3

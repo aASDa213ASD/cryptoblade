@@ -10,3 +10,4 @@ data/decrypted/*
 !data/encrypted/.encrypted_files_will_appear_here
 !data/decrypted/.decrypted_files_will_appear_here
 .pytest_cache
+dist/
