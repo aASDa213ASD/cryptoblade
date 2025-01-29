@@ -1,0 +1,2 @@
+CRYPTOBLADE [green]0.1.a1[/green] (cli) (built: [green]Sep 5 2024 20:42:50 PM[/green])
+with CryptoCLI [green]v1.0.0[/green], Copyright (c) [purple]@aASDa213ASD[/purple]

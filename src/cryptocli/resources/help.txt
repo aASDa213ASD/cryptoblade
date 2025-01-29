@@ -1,0 +1,7 @@
+cryptoblade: These are common commands used in various situations
+usage: encrypt [green]<file>[/green]
+       decrypt [green]<file>[/green] [green]<key>[/green]
+       hide [green]<encrypted_file>[/green] [green]<image_file>[/green]
+       unhide [green]<image_file>[/green] [green]<key_length>[/green]
+       version [[green]-v[/green] | [green]--verbose[/green]]
+       help
