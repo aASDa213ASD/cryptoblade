@@ -55,3 +55,28 @@ jobs:
         with:
           name: coverage-report
           path: coverage.xml
+  
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Build Tools
+        run: pip install build setuptools wheel
+
+      - name: Build Package
+        run: python -m build --sdist --wheel
+
+      - name: Upload Built Package as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-package
+          path: dist/
+
