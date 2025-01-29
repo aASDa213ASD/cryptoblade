@@ -3,4 +3,9 @@ __pycache__
 
 # Project specific
 .env/
-data/
+data/raw/*
+data/encrypted/*
+data/decrypted/*
+!data/raw/.raw_data_files_can_be_placed_here
+!data/encrypted/.encrypted_files_will_appear_here
+!data/decrypted/.decrypted_files_will_appear_here
