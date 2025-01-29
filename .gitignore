@@ -1,0 +1,6 @@
+# Python mess
+__pycache__
+
+# Project specific
+.env/
+data/
