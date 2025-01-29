@@ -3,8 +3,9 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - master
+      - "**"
   pull_request:
+  create:
 
 jobs:
   lint:
