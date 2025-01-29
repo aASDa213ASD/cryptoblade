@@ -20,8 +20,10 @@ class Cryptoblade:
 
         if file_name == "all":
             files = [
-                f for f in listdir(f"{self.directory}/../../data/raw/")
-                if isfile(join(f"{self.directory}/../../data/raw/", f)) and not f.startswith('.')
+                f
+                for f in listdir(f"{self.directory}/../../data/raw/")
+                if isfile(join(f"{self.directory}/../../data/raw/", f))
+                and not f.startswith(".")
             ]
             for file in files:
                 name, extension = file.rsplit(".", 1)

@@ -51,7 +51,9 @@ class CryptoCLI:
             self.console.print("cryptoblade: No file provided for encryption")
             return
 
-        if file_name != "all" and not path.exists(f"{self.directory}/../../data/raw/{file_name}"):
+        if file_name != "all" and not path.exists(
+            f"{self.directory}/../../data/raw/{file_name}"
+        ):
             self.console.print(
                 f"cryptoblade: File [green]'{file_name}'[/green] does not exist"
             )
@@ -188,8 +190,12 @@ class CryptoCLI:
 
     def __get_commands_completer(self) -> WordCompleter:
         known_arguments: dict = {
-            "encrypt": self.__get_direcotory_files_set(f"{self.directory}/../../data/raw/", True),
-            "decrypt": self.__get_direcotory_files_set(f"{self.directory}/../../data/encrypted/"),
+            "encrypt": self.__get_direcotory_files_set(
+                f"{self.directory}/../../data/raw/", True
+            ),
+            "decrypt": self.__get_direcotory_files_set(
+                f"{self.directory}/../../data/encrypted/"
+            ),
             #'hide': {'image', 'data'},
             #'unhide': {'image'},
             "help": None,  # No arguments
@@ -213,8 +219,9 @@ class CryptoCLI:
             makedirs(directory)
 
         file_list = [
-            f for f in listdir(directory)
-            if path.isfile(path.join(directory, f)) and not f.startswith('.')
+            f
+            for f in listdir(directory)
+            if path.isfile(path.join(directory, f)) and not f.startswith(".")
         ]
 
         if file_list:
